@@ -398,3 +398,40 @@ inventory.Melee.Value = false;
 inventory.Explosive.Value = false; 
 inventory.Build.Value = false; 
 inventory.BuildInfinity.Value = false; 
+
+class Block {
+  constructor(x, y, z, color) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.color = color; // {r: 255, g: 255, b: 255}
+  }
+  
+  // Функция для вычисления цвета в зависимости от расстояния
+  updateColor(distance) {
+    const factor = Math.min(1, distance / 100); // Приводим значение в диапазон от 0 до 1 (100 - макс. расстояние)
+    
+    // Изменяем цвет от белого (255, 255, 255) к другому цвету (например, к красному как пример)
+    this.color.r = 255 * (1 - factor); // R уменьшится до 0
+    this.color.g = 255 * (1 - factor); // G уменьшится до 0
+    this.color.b = 255; // B остаётся 255, как пример
+  }
+}
+
+// Функция для вычисления расстояния от спавн-блока
+function calculateDistance(x1, y1, z1, x2, y2, z2) {
+  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+}
+
+// Создаем спавн-блок на координатах (0, 0, 0)
+const spawnBlock = new Block(0, 0, 0, {r: 255, g: 255, b: 255});
+
+// Пример изменения цвета блока на координатах (x, y, z)
+function updateBlockColor(block, x, y, z) {
+  const distance = calculateDistance(block.x, block.y, block.z, x, y, z);
+  block.updateColor(distance);
+  console.log(`Цвет блока на (${x}, ${y}, ${z}): RGB(${block.color.r}, ${block.color.g}, ${block.color.b})`);
+}
+
+// Пример вызова функции на координатах (10, 20, 30)
+updateBlockColor(spawnBlock, 10, 20, 30);
